@@ -25,9 +25,9 @@ class Menu extends React.Component<any, any> {
       )
       .then(
         (data1) => {
-          console.log(data1.results);
+          //console.log(data1.results);
           this.setState({ data: data1 });
-          console.log(this.state.data?.results.length);
+          //console.log(this.state.data?.results.length);
         },
         (error) => {
           console.log('error occured ' + error);
