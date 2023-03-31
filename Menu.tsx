@@ -28,8 +28,6 @@ class Menu extends React.Component<any, any> {
           console.log(data1.results);
           this.setState({ data: data1 });
           console.log(this.state.data?.results.length);
-          //this.onTrigger();
-          //console.log(data1);
         },
         (error) => {
           console.log('error occured ' + error);
