@@ -18,23 +18,21 @@ class Menu extends React.Component<any, any> {
   };
 
   addToCart = (citm) => {
-    let item = this.state.cartItems?.find((i) => {
+    let item = this.state.cartItems?.find((i: any) => {
       return i.id === citm.id;
     });
-
-    console.log(item);
 
     if (item != null) {
       item.qty = item.qty + 1;
     } else {
       let cItems = {
+        id: citm.id,
         name: citm.name,
         qty: 1,
       };
-
       this.state.cartItems.push(cItems);
     }
-    console.log(this.state.cartItems);
+    //console.log(this.state.cartItems);
   };
 
   fetchMenuItems() {
