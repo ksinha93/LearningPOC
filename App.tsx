@@ -8,10 +8,15 @@ import Menu from './Menu';
 class App extends React.Component {
   state = {
     childMsg: '',
+    itemsCount: 0,
   };
 
   handleCallback = (childdata) => {
     this.setState({ childMsg: childdata });
+  };
+
+  handleItemsCount = (cartCount) => {
+    this.setState({ itemsCount: cartCount });
   };
 
   items = {
@@ -22,10 +27,12 @@ class App extends React.Component {
     quantity: 3,
   };
   render() {
-    const { childMsg } = this.state;
+    const childMsg = this.state.childMsg;
+    const itemsCount = this.state.itemsCount;
     return (
       <Router>
         <h1>{childMsg}</h1>
+        <h1>{itemsCount}</h1>
         <div>
           <Link to="/Menu">Menu</Link>&nbsp;
           <Link to="/ExpenseItem">Expense Item</Link>&nbsp;
@@ -46,7 +53,12 @@ class App extends React.Component {
           <Route
             exact
             path="/Menu"
-            element={<Menu fromChildComp={this.handleCallback} />}
+            element={
+              <Menu
+                fromChildComp={this.handleCallback}
+                cartItemsCount={this.handleItemsCount}
+              />
+            }
           ></Route>
         </Routes>
       </Router>

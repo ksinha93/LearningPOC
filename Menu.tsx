@@ -9,6 +9,7 @@ class Menu extends React.Component<any, any> {
       data: [],
       rand: 100 + Math.random() * (270 - 100),
       cartItems: [],
+      countCartItems: 0,
     };
     this.fetchMenuItems();
   }
@@ -31,6 +32,7 @@ class Menu extends React.Component<any, any> {
         qty: 1,
       };
       this.state.cartItems.push(cItems);
+      this.props.cartItemsCount(this.state.cartItems.length);
     }
     //console.log(this.state.cartItems);
   };
