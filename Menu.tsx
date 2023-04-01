@@ -7,12 +7,34 @@ class Menu extends React.Component<any, any> {
     this.state = {
       name: 'comments',
       data: [],
+      rand: 100 + Math.random() * (270 - 100),
+      cartItems: [],
     };
     this.fetchMenuItems();
   }
 
   onTrigger = () => {
     this.props.fromChildComp(this.state.data?.length);
+  };
+
+  addToCart = (citm) => {
+    let item = this.state.cartItems?.find((i) => {
+      return i.id === citm.id;
+    });
+
+    console.log(item);
+
+    if (item != null) {
+      item.qty = item.qty + 1;
+    } else {
+      let cItems = {
+        name: citm.name,
+        qty: 1,
+      };
+
+      this.state.cartItems.push(cItems);
+    }
+    console.log(this.state.cartItems);
   };
 
   fetchMenuItems() {
@@ -38,6 +60,7 @@ class Menu extends React.Component<any, any> {
 
   render() {
     this.onTrigger();
+
     return (
       <div>
         <table>
@@ -47,6 +70,8 @@ class Menu extends React.Component<any, any> {
               <th>Name</th>
               <th>Email</th>
               <th>Body</th>
+              <th>Count</th>
+              <th>Action</th>
             </tr>
           </thead>
           <tbody>
@@ -56,6 +81,10 @@ class Menu extends React.Component<any, any> {
                 <td>{c.name}</td>
                 <td>{c.email}</td>
                 <td>{c.body}</td>
+                <td>Rs. {this.state.rand?.toPrecision(5).toString()}</td>
+                <td>
+                  <button onClick={() => this.addToCart(c)}>Add</button>
+                </td>
               </tr>
             ))}
           </tbody>
