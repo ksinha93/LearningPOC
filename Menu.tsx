@@ -84,8 +84,6 @@ class Menu extends React.Component<any, any> {
   };
 
   fetchMenuItems() {
-    var responseclone;
-    console.log('4');
     fetch('https://jsonplaceholder.typicode.com/comments')
       .then((res) => res.json())
       .then(
