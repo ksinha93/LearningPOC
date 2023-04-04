@@ -9,6 +9,7 @@ class App extends React.Component {
   state = {
     childMsg: '',
     itemsCount: 0,
+    cartItems: null,
   };
 
   handleCallback = (childdata) => {
@@ -17,6 +18,11 @@ class App extends React.Component {
 
   handleItemsCount = (cartCount) => {
     this.setState({ itemsCount: cartCount });
+  };
+
+  handleItemArray = (newItems) => {
+    //this.setState({ cartItems: newItems });
+    //console.log(this.state.cartItems);
   };
 
   items = {
@@ -53,12 +59,7 @@ class App extends React.Component {
           <Route
             exact
             path="/Menu"
-            element={
-              <Menu
-                fromChildComp={this.handleCallback}
-                cartItemsCount={this.handleItemsCount}
-              />
-            }
+            element={<Menu cartItemsCount={this.handleItemsCount} />}
           ></Route>
         </Routes>
       </Router>

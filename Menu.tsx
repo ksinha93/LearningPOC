@@ -15,52 +15,97 @@ class Menu extends React.Component<any, any> {
   }
 
   onTrigger = () => {
-    this.props.fromChildComp(this.state.data?.length);
+    //this.props.fromChildComp(this.state.data?.length);
   };
+
+  updateCart = (cartItem) => {};
 
   addToCart = (citm) => {
     let item = this.state.cartItems?.find((i: any) => {
       return i.id === citm.id;
     });
 
-    if (item != null) {
-      item.qty = item.qty + 1;
+    if (item) {
+      let tmpCartItems = this.state.cartItems.map((el) =>
+        el.id === citm.id
+          ? {
+              ...el,
+              qty: el.qty + 1,
+              itemprice: el.itemprice,
+            }
+          : el
+      );
+
+      let tmpData = this.state.data.map((el1) =>
+        el1.id === citm.id
+          ? {
+              ...el1,
+              qty: el1.qty + 1,
+              itemprice: el1.itemprice,
+            }
+          : el1
+      );
+
+      this.setState({
+        cartItems: tmpCartItems,
+        data: tmpData,
+      });
+
+      let sum = this.state.cartItems.reduce((p, c) => {
+        return p + c.qty;
+      }, 1);
+      this.props.cartItemsCount(sum);
     } else {
       let cItems = {
         id: citm.id,
-        name: citm.name,
+        postname: citm.postname,
+        itemprice: citm.itemprice,
         qty: 1,
       };
+
       this.state.cartItems.push(cItems);
-      this.props.cartItemsCount(this.state.cartItems.length);
+      let tmpData = this.state.data.map((el) =>
+        el.id === citm.id
+          ? {
+              ...el,
+              qty: 1,
+              itemprice: el.itemprice,
+            }
+          : el
+      );
+      this.setState({
+        data: tmpData,
+      });
+      let sum = this.state.cartItems.reduce((p, c) => {
+        return p + c.qty;
+      }, 0);
+      this.props.cartItemsCount(sum);
     }
-    //console.log(this.state.cartItems);
   };
 
   fetchMenuItems() {
     var responseclone;
+    console.log('4');
     fetch('https://jsonplaceholder.typicode.com/comments')
-      .then(
-        (res) => res.json()
-        //responseclone = res.clone();
-        //return JSON.parse(res.toString());
-      )
+      .then((res) => res.json())
       .then(
         (data1) => {
-          this.setState({ data: data1 });
+          this.setState({
+            data: data1.map((ii) => ({
+              id: ii.id,
+              postname: ii.name,
+              itemprice: this.state.rand?.toPrecision(5).toString(),
+              qty: 0,
+            })),
+          });
         },
         (error) => {
           console.log('error occured ' + error);
-          // responseclone.text().then(function (bodytext) {
-          //   console.log(bodytext);
-          // });
         }
       );
   }
 
   render() {
-    this.onTrigger();
-
     return (
       <div>
         <table>
@@ -68,20 +113,20 @@ class Menu extends React.Component<any, any> {
             <tr>
               <th>Post Id</th>
               <th>Name</th>
-              <th>Email</th>
-              <th>Body</th>
+              <th>Item Price</th>
               <th>Count</th>
+              <th>Total Price</th>
               <th>Action</th>
             </tr>
           </thead>
           <tbody>
-            {this.state.data?.map((c: any) => (
+            {this.state.data.map((c: any) => (
               <tr key={c.id}>
                 <td>{c.id}</td>
-                <td>{c.name}</td>
-                <td>{c.email}</td>
-                <td>{c.body}</td>
-                <td>Rs. {this.state.rand?.toPrecision(5).toString()}</td>
+                <td>{c.postname}</td>
+                <td>Rs. {c.itemprice}</td>
+                <td>{c.qty}</td>
+                <td>{c.qty * c.itemprice}</td>
                 <td>
                   <button onClick={() => this.addToCart(c)}>Add</button>
                 </td>
