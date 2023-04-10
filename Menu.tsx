@@ -1,4 +1,5 @@
 import * as React from 'react';
+import cartContext from './cartContext';
 
 class Menu extends React.Component<any, any> {
   items: any[] = [];
@@ -96,6 +97,9 @@ class Menu extends React.Component<any, any> {
               qty: 0,
             })),
           });
+
+          this.props.newItems(this.state.data);
+          console.log(this.state.data);
         },
         (error) => {
           console.log('error occured ' + error);
@@ -105,37 +109,41 @@ class Menu extends React.Component<any, any> {
 
   render() {
     return (
-      <div>
-        <table>
-          <thead>
-            <tr>
-              <th>Post Id</th>
-              <th>Name</th>
-              <th>Item Price</th>
-              <th>Count</th>
-              <th>Total Price</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            {this.state.data.map((c: any) => (
-              <tr key={c.id}>
-                <td>{c.id}</td>
-                <td>{c.postname}</td>
-                <td>Rs. {c.itemprice}</td>
-                <td>{c.qty}</td>
-                <td>{c.qty * c.itemprice}</td>
-                <td>
-                  <button onClick={() => this.addToCart(c)}>Add</button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-        <div>
-          {/* <button onClick={this.onTrigger}>Pass Data to Parent</button> */}
-        </div>
-      </div>
+      <cartContext.Consumer>
+        {(ctx) => {
+          <div>
+            <table>
+              <thead>
+                <tr>
+                  <th>Post Id</th>
+                  <th>Name</th>
+                  <th>Item Price</th>
+                  <th>Count</th>
+                  <th>Total Price</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {ctx?.cartItenms?.map((c: any) => (
+                  <tr key={c.id}>
+                    <td>{c.id}</td>
+                    <td>{c.postname}</td>
+                    <td>Rs. {c.itemprice}</td>
+                    <td>{c.qty}</td>
+                    <td>{c.qty * c.itemprice}</td>
+                    <td>
+                      <button onClick={() => this.addToCart(c)}>Add</button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            <div>
+              {/* <button onClick={this.onTrigger}>Pass Data to Parent</button> */}
+            </div>
+          </div>;
+        }}
+      </cartContext.Consumer>
     );
   }
 }
