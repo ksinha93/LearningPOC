@@ -3,7 +3,7 @@ import './style.css';
 import ExpenseItem from './expenseItem';
 import { BrowserRouter as Router, Route, Link, Routes } from 'react-router-dom';
 import CustomerDetails from './customerDetails';
-import Menu from './Menu';
+import Menu from './newComponents/Menu';
 import cartContext from './cartContext';
 
 class App extends React.Component {
@@ -22,7 +22,18 @@ class App extends React.Component {
   };
 
   handleItemArray = (newItems) => {
-    this.setState({ cartItems: newItems });
+    console.log(newItems);
+    if (newItems && newItems.length > 0) {
+      this.setState({ cartItems: newItems });
+    } else {
+      this.setState({
+        cartItems: [
+          {
+            id: '1',
+          },
+        ],
+      });
+    }
     //console.log(this.state.cartItems);
   };
 
@@ -62,10 +73,11 @@ class App extends React.Component {
               exact
               path="/Menu"
               element={
-                <Menu
+                /*<Menu
                   cartItemsCount={this.handleItemsCount}
                   newItems={this.handleItemArray}
-                />
+                />*/
+                <Menu data1="from parent" data2="from parent 2" />
               }
             ></Route>
           </Routes>

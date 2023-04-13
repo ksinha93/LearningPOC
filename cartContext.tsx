@@ -1,5 +1,5 @@
 import React from 'react';
 
-let cartContext = React.createContext({ cartItenms: [] });
+let cartContext=React.createContext({cartItems:[]})
 
 export default cartContext;
